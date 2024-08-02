@@ -92,9 +92,13 @@ bool goalReached(const int cursor, const int goal, const int dimension) {
     return (cursor == goal - 1 || cursor == goal + 1 || cursor == goal + dimension || cursor == goal - dimension);
 }
 
-bool validMove(const int curCell, const int nextCell, const int dimension) {
+bool validMove(const int curCell, const int nextCell, const int dimension, const vector<int> path) {
 
     int curCol = curCell % dimension;
+
+    if (alreadyVisited(nextCell, path)) {
+                return false;
+        }
 
     if (nextCell == curCell + 1 && atRightEdge(curCol, dimension)) {
         return false;
