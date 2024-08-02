@@ -8,8 +8,6 @@
 
 using namespace std;
 
-/*Fix snake length*/
-
 void printGrid(const int user, const int goal, const float cellSize, sf::RenderWindow& window, sf::Font& font);
 char getNextMove(const char prevChar, bool& refresh, sf::RenderWindow& window, sf::Event& event, bool& active);
 void movePlayer(int& user, const char input, const float delay, sf::Clock& clock);
@@ -126,6 +124,10 @@ void printGrid(const int user, const int goal, const float cellSize, sf::RenderW
             cell.setOutlineThickness(2);
 
             window.draw(cell);
+
+            /* UNCOMMENT FOR CELL NUMBERS TO BE DISPLAY
+            * 
+            * 
             cellNum = to_string(mapGrid[row * dimension + col]);
             // Create a text object to display the number
             sf::Text cellText;
@@ -139,8 +141,10 @@ void printGrid(const int user, const int goal, const float cellSize, sf::RenderW
             sf::FloatRect textRect = cellText.getLocalBounds();
             cellText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
             cellText.setPosition(col * cellSize + cellSize / 2.0f, row * cellSize + cellSize / 2.0f);
+            
 
             window.draw(cellText);
+            */
         }
     }
 }

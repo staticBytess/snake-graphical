@@ -1,0 +1,1 @@
+Snake can go back on itself.
