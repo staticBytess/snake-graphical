@@ -8,13 +8,10 @@
 
 using namespace std;
 
-void placeuser(int& user);
-void printGrid(const int user, const float cellSize, sf::RenderWindow& window, sf::Font& font);
+void printGrid(const int user, const int goal, const float cellSize, sf::RenderWindow& window, sf::Font& font);
 void movePlayer(vector<int>& mapGrid, int& user, sf::RenderWindow& window, sf::Event& event, bool& refresh);
 void initVector(vector<int>& mapGrid);
-void placeGoal(const int position, int& goal);
-
-
+void placeGoal(const int user, int& goal);
 
 int const dimension = 9;
 int const vecSize = dimension * dimension;
@@ -35,8 +32,10 @@ int main() {
     float cellSize = window.getSize().x / dimension;
     srand(time(NULL));
     int user = center;
+    int goal;
     bool refresh;
     initVector(mapGrid);
+    placeGoal(user, goal);
 
     while (window.isOpen()) {
         sf::Event event;
@@ -45,17 +44,19 @@ int main() {
         //checks events from user
         movePlayer(mapGrid, user, window, event, refresh);
 
+
         window.clear();
 
-        printGrid(user, cellSize, window, font);
+        printGrid(user, goal, cellSize, window, font);
 
         //refreshes the user's position
         if (refresh) {
             user = center;
+            placeGoal(user, goal);
         }
-
-        
-        
+        else if(user == goal) {
+            placeGoal(user, goal);
+        }
 
         window.display();
     }
@@ -63,23 +64,7 @@ int main() {
     return 0;
 }
 
-void placeuser(int& user) {
-    int max = dimension * dimension-1;
-    int min = 0;
-    int randNum;
-
-
-    randNum = rand() % (max - min + 1) + min;
-
-    while (randNum == 0) {
-        randNum = rand() % (max - min + 1) + min;
-        
-    }
-
-    user = randNum;
-}
-
-void printGrid(const int user, const float cellSize, sf::RenderWindow& window, sf::Font& font) {
+void printGrid(const int user, const int goal, const float cellSize, sf::RenderWindow& window, sf::Font& font) {
     // Draw the grid
     string cellNum;
     for (int row = 0; row < dimension; ++row) {
@@ -91,6 +76,9 @@ void printGrid(const int user, const float cellSize, sf::RenderWindow& window, s
             // Set cell color based on its value in mapGrid
             if (mapGrid[row * dimension + col] == user) {
                 cell.setFillColor(sf::Color::Red);  // User cell
+            }
+            else if (mapGrid[row * dimension + col] == goal) {
+                cell.setFillColor(sf::Color::Yellow);  // User cell
             }
             else {
                 cell.setFillColor(sf::Color(88, 181, 80));  // Empty cell
@@ -151,18 +139,14 @@ void initVector(vector<int>& mapGrid) {
     }
 }
 
-void placeGoal(const int position, int& goal) {
-    int max = dimension * dimension-1;
+void placeGoal(const int user, int& goal) {
+    int max = vecSize;
     int min = 0;
     int randNum;
     
-    
     randNum = rand() % (max - min + 1) + min;
     
-    int rCol = randNum % dimension;
-    int rRow = randNum / dimension;
-    
-    while (randNum == position /*|| alreadyVisited(randNum, playerWasHere)*/) {
+    while (randNum == user /*|| alreadyVisited(randNum, playerWasHere)*/) {
         randNum = rand() % (max - min + 1) + min;
         //cout << randNum << " ";
     }

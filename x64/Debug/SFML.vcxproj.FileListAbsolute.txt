@@ -1,1 +1,2 @@
 C:\Users\David\Documents\programming projects\C++\SFMLSetup\SFML\x64\Debug\graphicSnake.exe
+C:\Users\David\Documents\programming projects\C++\snake-graphical\x64\Debug\graphicSnake.exe
