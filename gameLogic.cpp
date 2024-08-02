@@ -112,27 +112,3 @@ bool validMove(const int curCell, const int nextCell, const int dimension) {
 
     return true;
 }
-
-//bool validMove(const int curCell, const int nextCell, const vector<int> path, const int dimension) {
-//    if (!alreadyVisited(nextCell, path)) {
-//        return false;
-//    }
-//
-//    int curCol = curCell % dimension;
-//
-//    if (nextCell == curCell + 1 && atRightEdge(curCol, dimension)) {
-//        return false;
-//    }
-//    else if (nextCell == curCell - 1 && atLeftEdge(curCol)) {
-//        return false;
-//    }
-//    else if (nextCell < 0) {
-//        return false;
-//    }
-//    else if (nextCell >= dimension * dimension) {
-//        return false;
-//
-//    }
-//
-//    return true;
-//}
