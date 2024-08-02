@@ -8,9 +8,9 @@
 
 using namespace std;
 
-void printGrid(const int user, const int goal, const float cellSize, sf::RenderWindow& window, sf::Font& font);
+void printGrid(const int user, const int goal, const float cellSize, const float offset, sf::RenderWindow& window, sf::Font& font);
 char getNextMove(const char prevChar, bool& refresh, sf::RenderWindow& window, sf::Event& event, bool& active);
-void movePlayer(int& user, const char input, const float delay, sf::Clock& clock);
+void movePlayer(int& user, const char input, const float delay, sf::Clock& clock, const vector<int> player);
 void initVector(vector<int>& mapGrid);
 void placeGoal(const int user, int& goal, const vector<int> player);
 void updatePlayerVector(const int user, const int lastPos, const int level, vector<int>& player);
@@ -19,12 +19,22 @@ void resetVector(vector<int>& resetMe);
 int const dimension = 9;
 int const vecSize = dimension * dimension;
 int const center = dimension * (dimension / 2) + dimension / 2;
+const sf::Color scoreboardColor(50, 50, 50);
+const sf::Color scoreTextColor(255, 255, 255);
+const sf::Color mapColor(88, 181, 80);
+const sf::Color cellOutlineColor(0, 0, 0);
+const sf::Color snakeHeadColor(199, 69, 22);
+const sf::Color snakeBodyColor(255, 90 ,31);
+const sf::Color goalColor(232, 242, 0);
 bool playerIsHere(const int cellNum, const vector<int> player);
 vector<int> mapGrid; // set size to dim*dim, and set each index equal to 0
 vector<int> snakeBody;
 
 int main() {
-    sf::RenderWindow window(sf::VideoMode(800, 800), "David's Snake");
+
+    const float offset = 50;
+
+    sf::RenderWindow window(sf::VideoMode(800, 800+offset), "David's Snake");
     sf::Clock clock;
     
 
@@ -41,7 +51,7 @@ int main() {
     int level = 1;
     const float userDelayInSeconds = 0.15f;
     const float autoDelayInSeconds = 0.2f;
-
+    
     bool refresh;
     bool active;
     char input = 0;
@@ -52,20 +62,20 @@ int main() {
         sf::Event event;
         refresh = false;
         active = false;
-        window.clear();
+        window.clear(sf::Color(scoreboardColor));
 
         //checks events from user
         lastPos = user;
         input = getNextMove(input, refresh, window, event, active);
 
         if (active) {
-            movePlayer(user, input, userDelayInSeconds, clock);
+            movePlayer(user, input, userDelayInSeconds, clock, snakeBody);
         }
         else {
-            movePlayer(user, input, autoDelayInSeconds, clock);
+            movePlayer(user, input, autoDelayInSeconds, clock, snakeBody);
         }
         
-        printGrid(user, goal, cellSize, window, font);
+        
 
         //refreshes the user's position
         if (refresh) {
@@ -86,6 +96,20 @@ int main() {
             
         }
 
+        
+        // Create a text object for the scoreboard
+        sf::Text scoreText;
+        scoreText.setFont(font);
+        scoreText.setString("Level: " + std::to_string(level));
+        scoreText.setCharacterSize(24);
+        scoreText.setFillColor(scoreTextColor);
+        scoreText.setPosition(10, 10);
+
+        // Draw the scoreboard
+        window.draw(scoreText);
+
+        printGrid(user, goal, cellSize, offset, window, font);
+
 
         window.display();
     }
@@ -93,7 +117,7 @@ int main() {
     return 0;
 }
 
-void printGrid(const int user, const int goal, const float cellSize, sf::RenderWindow& window, sf::Font& font) {
+void printGrid(const int user, const int goal, const float cellSize, const float offset, sf::RenderWindow& window, sf::Font& font) {
     string cellNum;
     int cellNumber;
 
@@ -103,24 +127,24 @@ void printGrid(const int user, const int goal, const float cellSize, sf::RenderW
             cellNumber = mapGrid[row * dimension + col];
 
             sf::RectangleShape cell(sf::Vector2f(cellSize, cellSize));
-            cell.setPosition(col * cellSize, row * cellSize);
+            cell.setPosition(col * cellSize, row * cellSize + offset);
 
             // Set cell color based on its value in mapGrid
             if (cellNumber == user) {
-                cell.setFillColor(sf::Color::Black);  // User cell
+                cell.setFillColor(snakeHeadColor);  // User cell
             }
             else if (playerIsHere(cellNumber, snakeBody)) {
-                cell.setFillColor(sf::Color::Red);  // User cell
+                cell.setFillColor(snakeBodyColor);  // User cell
             }
             else if (cellNumber == goal) {
-                cell.setFillColor(sf::Color::Yellow);  // User cell
+                cell.setFillColor(goalColor);  // User cell
             }
             else {
-                cell.setFillColor(sf::Color(88, 181, 80));  // Empty cell
+                cell.setFillColor(mapColor);  // Empty cell
                 
             }
 
-            cell.setOutlineColor(sf::Color::Black);
+            cell.setOutlineColor(cellOutlineColor);
             cell.setOutlineThickness(2);
 
             window.draw(cell);
@@ -140,7 +164,7 @@ void printGrid(const int user, const int goal, const float cellSize, sf::RenderW
             // Center the text in the cell
             sf::FloatRect textRect = cellText.getLocalBounds();
             cellText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-            cellText.setPosition(col * cellSize + cellSize / 2.0f, row * cellSize + cellSize / 2.0f);
+            cellText.setPosition(col * cellSize + cellSize / 2.0f, row * cellSize + offset + cellSize / 2.0f);
             
 
             window.draw(cellText);
@@ -149,30 +173,30 @@ void printGrid(const int user, const int goal, const float cellSize, sf::RenderW
     }
 }
 
-void movePlayer(int& user, const char input, const float delay, sf::Clock& clock) {
+void movePlayer(int& user, const char input, const float delay, sf::Clock& clock, const vector<int> player) {
     
     if (clock.getElapsedTime().asSeconds() > delay) {
         switch (input) {
         case 'w':
-            if (validMove(user, user - dimension, dimension)) {
+            if (validMove(user, user - dimension, dimension, player)) {
                 user -= dimension;
                 clock.restart();
             }
             break;
         case 's':
-            if (validMove(user, user + dimension, dimension)) {
+            if (validMove(user, user + dimension, dimension, player)) {
                 user += dimension;
                 clock.restart();
             }
             break;
         case 'a':
-            if (validMove(user, user - 1, dimension)) {
+            if (validMove(user, user - 1, dimension, player)) {
                 user -= 1;
                 clock.restart();
             }
             break;
         case 'd':
-            if (validMove(user, user + 1, dimension)) {
+            if (validMove(user, user + 1, dimension, player)) {
                 user += 1;
                 clock.restart();
             }
