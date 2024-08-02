@@ -2,7 +2,7 @@
 <img src="lib/c++Logo.gif" style="width: 20%; display: inline-block;">
 
 <p>
-  It has been a goal of mine for many years to program Snake. You know it, you played it on your flip-phone. 
+  It has been a goal of mine for many years to program a graphical game. Only natural I start my journey with Snake. You know it, you love it, you played it on your flip-phone. 
   <br>
   Not that it is necessarily a difficult game to program, but I figured it was a good introduction into graphical game development.
   <br><br>
