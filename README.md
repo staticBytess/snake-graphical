@@ -8,7 +8,7 @@
   <br>
   Not that it is necessarily a difficult game to program, but I figured it was a good introduction into graphical game development.
   <br><br>
-  I have made small games using the console before, but never anything with a GUI. To tackle that, I decided to 
+  I have made small games using the console before, but never anything with graphics To tackle that, I decided to 
   <br>
   to use <a href="https://www.sfml-dev.org/index.php">SFML</a> as it seemed to have a low learning curve.
   <br>
@@ -18,4 +18,4 @@
 </p>
 <img src="lib/snake.gif" width="600" style="width: 100%; display: block; margin-left: auto; margin-right: auto;">
 
-Programmed in C++ with the Simple and Fast Multimedia Library to handle the GUI. 
+Programmed in C++ with the Simple and Fast Multimedia Library to handle the graphics. 
