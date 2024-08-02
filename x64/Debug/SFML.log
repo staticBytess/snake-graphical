@@ -1,9 +1,9 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(517,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (SFML.vcxproj).  This can lead to incorrect clean and rebuild behavior.
   source.cpp
-C:\Users\David\Documents\programming projects\C++\snake-graphical\source.cpp(32,20): warning C4244: 'initializing': conversion from 'T' to 'float', possible loss of data
+C:\Users\David\Documents\programming projects\C++\snake-graphical\source.cpp(38,20): warning C4244: 'initializing': conversion from 'T' to 'float', possible loss of data
           with
           [
               T=unsigned int
           ]
-C:\Users\David\Documents\programming projects\C++\snake-graphical\source.cpp(33,15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\David\Documents\programming projects\C++\snake-graphical\source.cpp(39,15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
   SFML.vcxproj -> C:\Users\David\Documents\programming projects\C++\snake-graphical\x64\Debug\graphicSnake.exe
